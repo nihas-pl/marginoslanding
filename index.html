@@ -1,0 +1,1153 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Margin OS — Know your true net profit</title>
+  <meta name="description"
+    content="Margin OS shows Shopify merchants their true net profit per order, product, and channel — after COGS, fees, shipping, refunds, and expenses. Join the waitlist." />
+  <meta property="og:title" content="Margin OS — Know your true net profit" />
+  <meta property="og:description"
+    content="See what you actually keep, not just revenue. Profit analytics for Shopify, coming soon." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://marginos.in" />
+  <link rel="icon" href="M.png" type="image/png" sizes="16x16">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap"
+    rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #FAF9F4;
+      --bg2: #ffffff;
+      --ink: #13190F;
+      --muted: #5d655b;
+      --faint: #9aa197;
+      --profit: #059669;
+      --profit-bright: #10B981;
+      --rev: #818CF8;
+      --cost: #C2410C;
+      --line: rgba(20, 30, 20, .10);
+      --line2: rgba(20, 30, 20, .06);
+      --surface: #ffffff;
+      --display: "Fraunces", Georgia, serif;
+      --sans: "Hanken Grotesk", -apple-system, sans-serif;
+      --mono: "JetBrains Mono", ui-monospace, monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
+
+    html {
+      scroll-behavior: smooth
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--sans);
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.5;
+      overflow-x: hidden;
+      position: relative
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background-image: linear-gradient(var(--line2) 1px, transparent 1px), linear-gradient(90deg, var(--line2) 1px, transparent 1px);
+      background-size: 64px 64px;
+      mask-image: radial-gradient(circle at 50% 0%, #000 0%, transparent 68%);
+      opacity: .8
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background: radial-gradient(55% 40% at 50% -8%, rgba(16, 185, 129, .13), transparent 60%)
+    }
+
+    .grain {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      opacity: .04;
+      mix-blend-mode: multiply;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")
+    }
+
+    .wrap {
+      position: relative;
+      z-index: 1;
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 28px
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 26px 0
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 600;
+      font-size: 18px;
+      letter-spacing: -.01em
+    }
+
+    .navbtn {
+      font-family: var(--mono);
+      font-size: 12.5px;
+      letter-spacing: .02em;
+      text-transform: uppercase;
+      color: var(--ink);
+      text-decoration: none;
+      border: 1px solid var(--line);
+      padding: 9px 16px;
+      border-radius: 999px;
+      transition: .25s;
+      background: var(--bg2)
+    }
+
+    .navbtn:hover {
+      border-color: var(--profit);
+      color: var(--profit);
+      box-shadow: 0 0 0 4px rgba(16, 185, 129, .08)
+    }
+
+    /* hero (centered) */
+    .hero {
+      text-align: center;
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 46px 0 26px
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--mono);
+      font-size: 11.5px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--profit);
+      background: rgba(16, 185, 129, .08);
+      border: 1px solid rgba(16, 185, 129, .25);
+      padding: 7px 13px;
+      border-radius: 999px;
+      margin-bottom: 24px
+    }
+
+    .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--profit);
+      box-shadow: 0 0 8px rgba(16, 185, 129, .7);
+      animation: pulse 2.2s infinite
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1
+      }
+
+      50% {
+        opacity: .35
+      }
+    }
+
+    h1 {
+      font-family: var(--display);
+      font-weight: 500;
+      font-size: clamp(38px, 6vw, 64px);
+      line-height: 1.03;
+      letter-spacing: -.025em
+    }
+
+    h1 em {
+      font-style: italic;
+      color: var(--profit)
+    }
+
+    .sub {
+      color: var(--muted);
+      font-size: clamp(16px, 1.5vw, 18.5px);
+      max-width: 30em;
+      margin: 22px auto 30px;
+      line-height: 1.55
+    }
+
+    .strike {
+      position: relative;
+      color: var(--faint);
+      white-space: nowrap
+    }
+
+    .strike::after {
+      content: "";
+      position: absolute;
+      left: -2px;
+      right: -2px;
+      top: 54%;
+      height: 2px;
+      background: var(--cost);
+      transform: scaleX(0);
+      transform-origin: left;
+      animation: strike .6s 1.1s forwards cubic-bezier(.6, 0, .2, 1)
+    }
+
+    @keyframes strike {
+      to {
+        transform: scaleX(1)
+      }
+    }
+
+    form {
+      display: flex;
+      gap: 9px;
+      max-width: 440px;
+      margin: 0 auto;
+      flex-wrap: wrap;
+      justify-content: center
+    }
+
+    .field {
+      flex: 1;
+      min-width: 210px;
+      display: flex;
+      align-items: center;
+      background: var(--bg2);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 0 14px;
+      transition: .2s
+    }
+
+    .field:focus-within {
+      border-color: var(--profit);
+      box-shadow: 0 0 0 4px rgba(16, 185, 129, .1)
+    }
+
+    input[type=email] {
+      flex: 1;
+      background: transparent;
+      border: 0;
+      outline: 0;
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 15px;
+      padding: 15px 0
+    }
+
+    input::placeholder {
+      color: var(--faint)
+    }
+
+    button.cta {
+      font-family: var(--sans);
+      font-weight: 600;
+      font-size: 15px;
+      color: #fff;
+      background: var(--profit);
+      border: 0;
+      border-radius: 12px;
+      padding: 15px 22px;
+      cursor: pointer;
+      transition: .2s;
+      white-space: nowrap
+    }
+
+    button.cta:hover {
+      background: #047857;
+      transform: translateY(-1px);
+      box-shadow: 0 12px 26px -12px rgba(5, 150, 105, .5)
+    }
+
+    button.cta:disabled {
+      opacity: .6;
+      cursor: default;
+      transform: none;
+      box-shadow: none
+    }
+
+    .formnote {
+      font-size: 13px;
+      color: var(--faint);
+      margin-top: 13px
+    }
+
+    .formnote b {
+      color: var(--muted);
+      font-weight: 500
+    }
+
+    .msg {
+      font-size: 14.5px;
+      margin-top: 14px;
+      display: none
+    }
+
+    .msg.show {
+      display: block
+    }
+
+    .msg.ok {
+      color: var(--profit)
+    }
+
+    .msg.err {
+      color: var(--cost)
+    }
+
+    /* dashboard preview */
+    .dashwrap {
+      position: relative;
+      z-index: 1;
+      max-width: 1060px;
+      margin: 14px auto 0;
+      padding: 0 28px
+    }
+
+    .dash {
+      background: var(--bg2);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 18px;
+      box-shadow: 0 60px 120px -55px rgba(16, 40, 30, .4), 0 6px 18px rgba(20, 30, 20, .05)
+    }
+
+    .dash-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 15px;
+      padding: 2px 4px;
+      flex-wrap: wrap;
+      gap: 10px
+    }
+
+    .dash-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 600;
+      font-size: 15px
+    }
+
+    .dash-title .live {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--profit);
+      background: rgba(16, 185, 129, .1);
+      border: 1px solid rgba(16, 185, 129, .22);
+      padding: 3px 9px;
+      border-radius: 999px;
+      letter-spacing: .04em;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px
+    }
+
+    .seg {
+      display: inline-flex;
+      background: rgba(20, 30, 20, .04);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 3px
+    }
+
+    .seg button {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--muted);
+      background: transparent;
+      border: 0;
+      padding: 6px 13px;
+      border-radius: 7px;
+      cursor: pointer;
+      transition: .2s
+    }
+
+    .seg button.on {
+      background: var(--bg2);
+      color: var(--ink);
+      box-shadow: 0 1px 2px rgba(20, 30, 20, .12)
+    }
+
+    .kpis {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 12px
+    }
+
+    .kpi {
+      background: var(--bg);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 13px 14px;
+      transition: .25s
+    }
+
+    .kpi:hover {
+      border-color: rgba(16, 185, 129, .3);
+      transform: translateY(-2px)
+    }
+
+    .kpi .l {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: var(--muted)
+    }
+
+    .kpi .v {
+      font-size: 21px;
+      font-weight: 700;
+      letter-spacing: -.01em;
+      margin-top: 5px;
+      transition: opacity .2s
+    }
+
+    .kpi .chg {
+      font-family: var(--mono);
+      font-size: 10px;
+      margin-top: 3px;
+      color: var(--profit)
+    }
+
+    .kpi.hl {
+      background: rgba(16, 185, 129, .06);
+      border-color: rgba(16, 185, 129, .32)
+    }
+
+    .kpi.hl .v {
+      color: var(--profit)
+    }
+
+    .chartcard {
+      background: var(--bg);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 16px 16px 12px
+    }
+
+    .chart-h {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 6px;
+      flex-wrap: wrap;
+      gap: 8px
+    }
+
+    .chart-h b {
+      font-size: 14px
+    }
+
+    .chart-h .s {
+      display: block;
+      font-size: 11.5px;
+      color: var(--muted);
+      margin-top: 1px
+    }
+
+    .legend {
+      display: flex;
+      gap: 14px;
+      font-size: 11px;
+      color: var(--muted);
+      font-family: var(--mono)
+    }
+
+    .legend i {
+      display: inline-block;
+      width: 9px;
+      height: 9px;
+      border-radius: 3px;
+      margin-right: 6px;
+      vertical-align: middle
+    }
+
+    svg#chart {
+      width: 100%;
+      height: auto;
+      display: block
+    }
+
+    .grid {
+      stroke: var(--line2);
+      stroke-width: 1;
+      stroke-dasharray: 3 4
+    }
+
+    .ytick {
+      fill: var(--faint);
+      font-size: 9px;
+      font-family: var(--mono);
+      text-anchor: end
+    }
+
+    .lrev {
+      fill: none;
+      stroke: var(--rev);
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round
+    }
+
+    .lnet {
+      fill: none;
+      stroke: var(--profit-bright);
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round
+    }
+
+    .xaxis {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 9px;
+      padding: 0 2px;
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--faint)
+    }
+
+    .section {
+      padding: 80px 0 0;
+      margin-top: 48px;
+      border-top: 1px solid var(--line2)
+    }
+
+    .eyebrow {
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--profit);
+      margin-bottom: 16px
+    }
+
+    h2 {
+      font-family: var(--display);
+      font-weight: 500;
+      font-size: clamp(28px, 3.6vw, 40px);
+      letter-spacing: -.02em;
+      line-height: 1.08;
+      max-width: 16em
+    }
+
+    h2 .muted {
+      color: var(--faint)
+    }
+
+    .grid3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-top: 44px
+    }
+
+    .feat {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 24px;
+      transition: .3s;
+      box-shadow: 0 1px 2px rgba(20, 30, 20, .03)
+    }
+
+    .feat:hover {
+      border-color: rgba(16, 185, 129, .35);
+      background: rgba(16, 185, 129, .035);
+      transform: translateY(-3px);
+      box-shadow: 0 18px 36px -22px rgba(16, 40, 30, .22)
+    }
+
+    .feat .ic {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: rgba(16, 185, 129, .1);
+      border: 1px solid rgba(16, 185, 129, .22);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px
+    }
+
+    .feat h3 {
+      font-size: 16.5px;
+      font-weight: 600;
+      letter-spacing: -.01em;
+      margin-bottom: 7px
+    }
+
+    .feat p {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.55
+    }
+
+    .statement {
+      text-align: center;
+      padding: 96px 0
+    }
+
+    .statement p {
+      font-family: var(--display);
+      font-weight: 400;
+      font-style: italic;
+      font-size: clamp(26px, 4vw, 46px);
+      line-height: 1.18;
+      letter-spacing: -.02em;
+      max-width: 16em;
+      margin: 0 auto;
+      color: var(--ink)
+    }
+
+    .statement p b {
+      font-style: normal;
+      font-weight: 500;
+      color: var(--profit)
+    }
+
+    .final {
+      text-align: center;
+      padding: 30px 0 96px
+    }
+
+    .final h2 {
+      margin: 0 auto 10px
+    }
+
+    .final .sub {
+      margin: 0 auto 30px
+    }
+
+    .faq {
+      max-width: 760px;
+      margin: 44px auto 0;
+      text-align: left
+    }
+
+    .faq-section {
+      text-align: center
+    }
+
+    .faq-section h2 {
+      margin: 0 auto
+    }
+
+    .faq details {
+      border-bottom: 1px solid var(--line)
+    }
+
+    .faq summary {
+      list-style: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 21px 2px;
+      font-size: 16.5px;
+      font-weight: 600;
+      letter-spacing: -.01em
+    }
+
+    .faq summary::-webkit-details-marker {
+      display: none
+    }
+
+    .faq summary .chev {
+      flex-shrink: 0;
+      color: var(--profit);
+      transition: transform .25s
+    }
+
+    .faq details[open] summary .chev {
+      transform: rotate(180deg)
+    }
+
+    .faq .a {
+      padding: 0 2px 22px;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.62;
+      max-width: 64ch
+    }
+
+    .faq .a a {
+      color: var(--profit);
+      text-decoration: none
+    }
+
+    footer {
+      border-top: 1px solid var(--line2);
+      padding: 34px 0 50px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px
+    }
+
+    footer .brand {
+      font-size: 15px
+    }
+
+    .links {
+      display: flex;
+      gap: 22px;
+      font-size: 13.5px;
+      font-family: var(--mono);
+      letter-spacing: .02em
+    }
+
+    .links a {
+      color: var(--muted);
+      text-decoration: none;
+      transition: .2s
+    }
+
+    .links a:hover {
+      color: var(--profit)
+    }
+
+    .copy {
+      font-size: 12.5px;
+      color: var(--faint);
+      font-family: var(--mono);
+      width: 100%
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(14px);
+      animation: rise .7s forwards
+    }
+
+    @keyframes rise {
+      to {
+        opacity: 1;
+        transform: none
+      }
+    }
+
+    .d1 {
+      animation-delay: .05s
+    }
+
+    .d2 {
+      animation-delay: .15s
+    }
+
+    .d3 {
+      animation-delay: .25s
+    }
+
+    .d4 {
+      animation-delay: .35s
+    }
+
+    .d5 {
+      animation-delay: .5s
+    }
+
+    @media(max-width:680px) {
+      .kpis {
+        grid-template-columns: repeat(2, 1fr)
+      }
+
+      .grid3 {
+        grid-template-columns: 1fr
+      }
+
+      .dashwrap,
+      .wrap {
+        padding: 0 18px
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="grain"></div>
+  <div class="wrap">
+    <nav>
+      <div class="brand"><img src="M.png" width="32px" height="auto"> Margin OS</div>
+      <a class="navbtn" href="#join">Join waitlist</a>
+    </nav>
+
+    <header class="hero">
+      <div class="badge reveal d1"><span class="dot"></span> Coming soon to the Shopify App Store</div>
+      <h1 class="reveal d2">Know your <em>true profit</em>.<br>Not just <span class="strike">revenue</span>.</h1>
+      <p class="sub reveal d3">Real net profit for your Shopify store — per order, product, and channel, after COGS,
+        fees, shipping, refunds, and expenses. See it live below. 👇</p>
+      <div class="reveal d4" id="join">
+        <form id="waitlist" action="https://formspree.io/f/xqeonrvd" method="POST">
+          <label class="field"><input type="email" name="email" required placeholder="you@yourstore.com"
+              autocomplete="email" /></label>
+          <button class="cta" type="submit">Join the waitlist</button>
+        </form>
+        <p class="formnote"><b>Be first in line</b> — early access + founding-merchant pricing.</p>
+        <p class="msg ok" id="ok">You're on the list. We'll email you the moment Margin OS goes live. 🎉</p>
+        <p class="msg err" id="err">Something went wrong — please try again.</p>
+      </div>
+    </header>
+  </div>
+
+  <!-- INTERACTIVE DASHBOARD PREVIEW -->
+  <div class="dashwrap reveal d4">
+    <div class="dash" aria-label="Margin OS dashboard preview">
+      <div class="dash-top">
+        <div class="dash-title">
+          <svg width="22" height="22" viewBox="0 0 32 32">
+            <rect width="32" height="32" rx="7" fill="#121a15" />
+            <path d="M7 21 L13 14 L19 18 L25 9" stroke="#10b981" stroke-width="2.5" fill="none" stroke-linecap="round"
+              stroke-linejoin="round" />
+          </svg>
+          Profit Intelligence <span class="live"><span class="dot"></span>Live demo</span>
+        </div>
+        <div class="seg" id="seg">
+          <button data-r="7D">7D</button>
+          <button data-r="30D" class="on">30D</button>
+          <button data-r="90D">90D</button>
+        </div>
+      </div>
+
+      <div class="kpis">
+        <div class="kpi">
+          <div class="l">Today's Revenue</div>
+          <div class="v" id="t-rev">$0</div>
+        </div>
+        <div class="kpi">
+          <div class="l">Today's Profit</div>
+          <div class="v" id="t-profit">$0</div>
+        </div>
+        <div class="kpi">
+          <div class="l" id="l-prev">30-Day Revenue</div>
+          <div class="v" id="p-rev">$0</div>
+          <div class="chg" id="c-prev"></div>
+        </div>
+        <div class="kpi">
+          <div class="l" id="l-pprofit">30-Day Profit</div>
+          <div class="v" id="p-profit">$0</div>
+          <div class="chg" id="c-pprofit"></div>
+        </div>
+        <div class="kpi">
+          <div class="l" id="l-cogs">COGS (30D)</div>
+          <div class="v" id="cogs">$0</div>
+        </div>
+        <div class="kpi">
+          <div class="l">Returns Cost</div>
+          <div class="v" id="returns">$0</div>
+          <div class="chg" id="c-returns"></div>
+        </div>
+        <div class="kpi">
+          <div class="l">Operating Costs</div>
+          <div class="v" id="opex">$0</div>
+        </div>
+        <div class="kpi hl">
+          <div class="l">Net Profit (after exp.)</div>
+          <div class="v" id="net">$0</div>
+          <div class="chg" id="c-net"></div>
+        </div>
+      </div>
+
+      <div class="chartcard">
+        <div class="chart-h">
+          <div><b>Profit Trend</b><span class="s">Revenue vs net profit over time</span></div>
+          <div class="legend"><span><i style="background:var(--rev)"></i>Revenue</span><span><i
+                style="background:var(--profit-bright)"></i>Net profit</span></div>
+        </div>
+        <svg id="chart" viewBox="0 0 760 200" preserveAspectRatio="none" aria-hidden="true"></svg>
+        <div class="xaxis" id="xaxis"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <section class="section">
+      <div class="eyebrow reveal">What you'll get</div>
+      <h2 class="reveal">Every cost accounted for. <span class="muted">Every margin, finally visible.</span></h2>
+      <div class="grid3">
+        <div class="feat">
+          <div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2">
+              <path d="M3 3v18h18" />
+              <path d="M7 14l4-4 3 3 5-6" stroke-linecap="round" stroke-linejoin="round" />
+            </svg></div>
+          <h3>True net profit</h3>
+          <p>Real profit and margin for every order, product, and channel — after all costs, not just revenue.</p>
+        </div>
+        <div class="feat">
+          <div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2">
+              <rect x="3" y="4" width="18" height="16" rx="2" />
+              <path d="M3 9h18M9 14h6" stroke-linecap="round" />
+            </svg></div>
+          <h3>COGS in seconds</h3>
+          <p>Set product costs inline or import them in bulk by CSV. Margins recalculate automatically.</p>
+        </div>
+        <div class="feat">
+          <div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2">
+              <circle cx="12" cy="12" r="9" />
+              <path d="M12 7v5l3 2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg></div>
+          <h3>Operating expenses</h3>
+          <p>Add monthly costs — ads, software, salaries, rent — for your real, all-in bottom line.</p>
+        </div>
+        <div class="feat">
+          <div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2">
+              <path d="M3 17l6-6 4 4 8-8" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M21 7v5h-5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg></div>
+          <h3>Profit forecast</h3>
+          <p>See where your profit is heading next month, based on your real sales trend.</p>
+        </div>
+        <div class="feat">
+          <div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2">
+              <path d="M4 4h16v6H4zM4 14h16v6H4z" stroke-linejoin="round" />
+            </svg></div>
+          <h3>Channel breakdown</h3>
+          <p>Find which sales channels actually make money — and which quietly drain it.</p>
+        </div>
+        <div class="feat">
+          <div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2">
+              <path d="M12 2L3 7v6c0 5 3.5 8 9 9 5.5-1 9-4 9-9V7z" stroke-linejoin="round" />
+            </svg></div>
+          <h3>Right inside Shopify</h3>
+          <p>Embedded in your admin. Your data stays yours — encrypted, never sold.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="statement">
+      <p>Revenue is what you ring up.<br><b>Profit is what you keep.</b></p>
+    </section>
+
+    <section class="section faq-section">
+      <div class="eyebrow reveal">Questions</div>
+      <h2 class="reveal">Everything you're wondering.</h2>
+      <div class="faq reveal">
+        <details>
+          <summary>What does Margin OS actually calculate?
+            <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2">
+              <path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </summary>
+          <div class="a">Your true net profit — revenue minus COGS, transaction fees, shipping, refunds, and your
+            operating expenses — for every order, product, and channel. Not just revenue.</div>
+        </details>
+        <details>
+          <summary>How much does it cost?
+            <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2">
+              <path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </summary>
+          <div class="a">$9.99/month with a 7-day free trial, billed through Shopify on your regular invoice — no
+            separate card needed. Waitlist members get founding-merchant pricing.</div>
+        </details>
+        <details>
+          <summary>Is my data safe?
+            <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2">
+              <path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </summary>
+          <div class="a">Yes. Your data is encrypted, never sold, and used only to calculate your profit. We access only
+            what's needed — your orders, products, and the costs you enter. If you uninstall, your data is deleted
+            within 48 hours.</div>
+        </details>
+        <details>
+          <summary>Do I have to set anything up?
+            <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2">
+              <path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </summary>
+          <div class="a">Margin OS syncs your orders and products automatically on install. You just add your product
+            costs — inline or by bulk CSV — plus any monthly expenses, and your real margins appear instantly.</div>
+        </details>
+        <details>
+          <summary>Which stores does it work with?
+            <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2">
+              <path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </summary>
+          <div class="a">Any Shopify store. It installs in one click from the Shopify App Store and runs embedded right
+            inside your admin — nothing else to connect.</div>
+        </details>
+        <details>
+          <summary>When does it launch?
+            <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2">
+              <path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </summary>
+          <div class="a">It's in final review with Shopify right now. Join the waitlist and you'll be first to get
+            access the moment it goes live.</div>
+        </details>
+      </div>
+    </section>
+
+    <section class="final">
+      <h2 class="reveal">Get on the waitlist.</h2>
+      <p class="sub reveal">We're in final review with Shopify. Join now for early access and founding-merchant pricing.
+      </p>
+      <form id="waitlist2" action="https://formspree.io/f/xqeonrvd" method="POST" class="reveal">
+        <label class="field"><input type="email" name="email" required placeholder="you@yourstore.com"
+            autocomplete="email" /></label>
+        <button class="cta" type="submit">Join the waitlist</button>
+      </form>
+      <p class="msg ok" id="ok2">You're on the list. We'll be in touch soon. 🎉</p>
+      <p class="msg err" id="err2">Something went wrong — please try again.</p>
+    </section>
+
+    <footer>
+      <div class="brand"><img src="M.png" width="32px" height="auto"> Margin OS</div>
+      <div class="links"><a href="mailto:support@marginos.in">Contact</a><a href="/privacy">Privacy</a><a
+          href="/terms">Terms</a></div>
+      <div class="copy">© 2026 Margin OS · True profit intelligence for Shopify merchants</div>
+    </footer>
+  </div>
+
+  <script>
+    var TODAY = { rev: 1840, profit: 512 };
+    var RL = { '7D': '7-Day', '30D': '30-Day', '90D': '90-Day' };
+    var DATA = {
+      '7D': {
+        rev: 11480, profit: 4735, cogs: 5280, returns: 195, opex: 1450, net: 3285, chg: { rev: 5.4, profit: 7.1, net: 9.0, returns: -3.2 },
+        series: [1200, 900, 1500, 2100, 1300, 2600, 1980], xl: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+      },
+      '30D': {
+        rev: 48250, profit: 19902, cogs: 22180, returns: 820, opex: 6200, net: 13702, chg: { rev: 8.1, profit: 10.2, net: 12.4, returns: -6.0 },
+        series: [700, 520, 880, 640, 1200, 980, 1500, 2400, 5200, 2100, 1800, 2600, 1400, 2000, 3100, 2300], xl: ['May 18', 'May 25', 'Jun 1', 'Jun 8', 'Jun 16']
+      },
+      '90D': {
+        rev: 144900, profit: 59700, cogs: 66540, returns: 2460, opex: 18600, net: 41100, chg: { rev: 22.6, profit: 28.4, net: 31.2, returns: -11.4 },
+        series: [3200, 2800, 4100, 3600, 5200, 4800, 9800, 5400, 4600, 6200, 4200, 7100, 5600, 8800], xl: ['Mar 18', 'Apr 8', 'Apr 29', 'May 20', 'Jun 16']
+      }
+    };
+    var money = function (n) { return '$' + Math.round(n).toLocaleString('en-US') };
+    var tick = function (v) { if (v >= 1000) { var k = v / 1000; return '$' + (k % 1 ? k.toFixed(1) : k) + 'K'; } return '$' + v; };
+    var set = function (id, v) { var e = document.getElementById(id); if (e) e.textContent = money(v); };
+    var setChg = function (id, v) {
+      var e = document.getElementById(id); if (!e) return;
+      var up = v >= 0, arrow = (id === 'c-returns') ? (v < 0 ? '▼' : '▲') : (up ? '▲' : '▼');
+      e.textContent = arrow + ' ' + Math.abs(v).toFixed(1) + '% vs prev';
+      e.style.color = (id === 'c-returns' ? (v < 0 ? 'var(--profit)' : 'var(--cost)') : (up ? 'var(--profit)' : 'var(--cost)'));
+    };
+
+    function smooth(pts) {
+      if (pts.length < 2) return '';
+      var d = 'M' + pts[0][0].toFixed(1) + ',' + pts[0][1].toFixed(1);
+      for (var i = 0; i < pts.length - 1; i++) {
+        var p0 = pts[i - 1] || pts[i], p1 = pts[i], p2 = pts[i + 1], p3 = pts[i + 2] || p2;
+        var c1x = p1[0] + (p2[0] - p0[0]) / 6, c1y = p1[1] + (p2[1] - p0[1]) / 6;
+        var c2x = p2[0] - (p3[0] - p1[0]) / 6, c2y = p2[1] - (p3[1] - p1[1]) / 6;
+        d += ' C' + c1x.toFixed(1) + ',' + c1y.toFixed(1) + ' ' + c2x.toFixed(1) + ',' + c2y.toFixed(1) + ' ' + p2[0].toFixed(1) + ',' + p2[1].toFixed(1);
+      } return d;
+    }
+
+    function chart(range) {
+      var s = DATA[range].series, net = s.map(function (r) { return r * 0.284 });
+      var W = 760, H = 200, padL = 42, padR = 10, padT = 14, padB = 6, n = s.length;
+      var max = Math.max.apply(null, s), niceMax = Math.ceil(max / 500) * 500;
+      var x = function (i) { return padL + (W - padL - padR) * (i / (n - 1)) };
+      var y = function (v) { return padT + (H - padT - padB) * (1 - v / niceMax) };
+      var grid = '', L = 4;
+      for (var g = 0; g <= L; g++) {
+        var gv = niceMax * g / L, gy = y(gv);
+        grid += '<line class="grid" x1="' + padL + '" y1="' + gy.toFixed(1) + '" x2="' + (W - padR) + '" y2="' + gy.toFixed(1) + '"/>';
+        grid += '<text class="ytick" x="' + (padL - 7) + '" y="' + (gy + 3).toFixed(1) + '">' + tick(gv) + '</text>';
+      }
+      var rp = s.map(function (v, i) { return [x(i), y(v)] }), np = net.map(function (v, i) { return [x(i), y(v)] });
+      var base = y(0), rl = smooth(rp), nl = smooth(np);
+      var ra = rl + ' L' + x(n - 1).toFixed(1) + ',' + base.toFixed(1) + ' L' + x(0).toFixed(1) + ',' + base.toFixed(1) + ' Z';
+      var na = nl + ' L' + x(n - 1).toFixed(1) + ',' + base.toFixed(1) + ' L' + x(0).toFixed(1) + ',' + base.toFixed(1) + ' Z';
+      var svg = document.getElementById('chart');
+      svg.innerHTML = '<defs>' +
+        '<linearGradient id="gr" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#818CF8" stop-opacity=".18"/><stop offset="1" stop-color="#818CF8" stop-opacity="0"/></linearGradient>' +
+        '<linearGradient id="gn" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#10B981" stop-opacity=".22"/><stop offset="1" stop-color="#10B981" stop-opacity="0"/></linearGradient></defs>' +
+        grid +
+        '<path d="' + ra + '" fill="url(#gr)"/>' + '<path d="' + na + '" fill="url(#gn)"/>' +
+        '<path class="lrev" d="' + rl + '"/>' + '<path class="lnet" d="' + nl + '"/>';
+      [svg.querySelector('.lrev'), svg.querySelector('.lnet')].forEach(function (p) {
+        var len = p.getTotalLength(); p.style.strokeDasharray = len; p.style.strokeDashoffset = len;
+        p.getBoundingClientRect(); p.style.transition = 'stroke-dashoffset 1.1s cubic-bezier(.6,0,.2,1)'; p.style.strokeDashoffset = 0;
+      });
+      var xa = document.getElementById('xaxis'); xa.innerHTML = DATA[range].xl.map(function (t) { return '<span>' + t + '</span>' }).join('');
+    }
+
+    function countUp(id, target) {
+      var el = document.getElementById(id), dur = 1100, start = null;
+      function step(t) {
+        if (!start) start = t; var p = Math.min((t - start) / dur, 1), e = 1 - Math.pow(1 - p, 3);
+        el.textContent = money(target * e); if (p < 1) requestAnimationFrame(step);
+      } requestAnimationFrame(step);
+    }
+
+    function render(range, first) {
+      var d = DATA[range];
+      document.getElementById('l-prev').textContent = RL[range] + ' Revenue';
+      document.getElementById('l-pprofit').textContent = RL[range] + ' Profit';
+      document.getElementById('l-cogs').textContent = 'COGS (' + range + ')';
+      set('t-rev', TODAY.rev); set('t-profit', TODAY.profit);
+      set('p-rev', d.rev); set('p-profit', d.profit); set('cogs', d.cogs); set('returns', d.returns); set('opex', d.opex);
+      if (first) { countUp('net', d.net); } else { set('net', d.net); }
+      setChg('c-prev', d.chg.rev); setChg('c-pprofit', d.chg.profit); setChg('c-net', d.chg.net); setChg('c-returns', d.chg.returns);
+      chart(range);
+    }
+
+    document.getElementById('seg').addEventListener('click', function (e) {
+      var b = e.target.closest('button'); if (!b) return;
+      [].forEach.call(this.children, function (c) { c.classList.remove('on') }); b.classList.add('on');
+      render(b.dataset.r, false);
+    });
+    render('30D', true);
+
+    function wire(formId, okId, errId) {
+      var f = document.getElementById(formId); if (!f) return;
+      f.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        var ok = document.getElementById(okId), err = document.getElementById(errId);
+        ok.classList.remove('show'); err.classList.remove('show');
+        var btn = f.querySelector('button'), label = btn.textContent; btn.disabled = true; btn.textContent = 'Joining…';
+        try {
+          var res = await fetch(f.action, { method: 'POST', body: new FormData(f), headers: { 'Accept': 'application/json' } });
+          if (res.ok) { f.reset(); ok.classList.add('show'); btn.textContent = 'Joined ✓'; } else { throw 0; }
+        } catch (_) { err.classList.add('show'); btn.disabled = false; btn.textContent = label; }
+      });
+    }
+    wire('waitlist', 'ok', 'err'); wire('waitlist2', 'ok2', 'err2');
+  </script>
+</body>
+
+</html>
