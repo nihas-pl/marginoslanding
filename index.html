@@ -4,12 +4,12 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Margin OS — Know your true net profit</title>
+  <title>Margin OS — Know your true net profit on Shopify</title>
   <meta name="description"
-    content="Margin OS shows Shopify merchants their true net profit per order, product, and channel — after COGS, fees, shipping, refunds, and expenses. Join the waitlist." />
-  <meta property="og:title" content="Margin OS — Know your true net profit" />
+    content="Margin OS shows Shopify merchants their true net profit per order, product, and channel — after COGS, fees, shipping, refunds, and expenses. Install from the Shopify App Store." />
+  <meta property="og:title" content="Margin OS — Know your true net profit on Shopify" />
   <meta property="og:description"
-    content="See what you actually keep, not just revenue. Profit analytics for Shopify, coming soon." />
+    content="See what you actually keep, not just revenue. Profit analytics for Shopify — now on the App Store." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://marginos.in" />
   <link rel="icon" href="M.png" type="image/png" sizes="16x16">
@@ -112,30 +112,49 @@
       letter-spacing: -.01em
     }
 
-    .navbtn {
-      font-family: var(--mono);
-      font-size: 12.5px;
-      letter-spacing: .02em;
-      text-transform: uppercase;
-      color: var(--ink);
+    .navlinks {
+      display: flex;
+      align-items: center;
+      gap: 26px
+    }
+
+    .navlinks a.txt {
+      font-size: 14px;
+      color: var(--muted);
       text-decoration: none;
-      border: 1px solid var(--line);
-      padding: 9px 16px;
+      transition: .2s
+    }
+
+    .navlinks a.txt:hover {
+      color: var(--profit)
+    }
+
+    .navbtn {
+      font-family: var(--sans);
+      font-size: 14px;
+      font-weight: 600;
+      color: #fff;
+      text-decoration: none;
+      border: 1px solid var(--profit);
+      padding: 10px 18px;
       border-radius: 999px;
       transition: .25s;
-      background: var(--bg2)
+      background: var(--profit);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px
     }
 
     .navbtn:hover {
-      border-color: var(--profit);
-      color: var(--profit);
-      box-shadow: 0 0 0 4px rgba(16, 185, 129, .08)
+      background: #047857;
+      border-color: #047857;
+      box-shadow: 0 10px 22px -12px rgba(5, 150, 105, .55)
     }
 
     /* hero (centered) */
     .hero {
       text-align: center;
-      max-width: 760px;
+      max-width: 780px;
       margin: 0 auto;
       padding: 46px 0 26px
     }
@@ -193,7 +212,7 @@
     .sub {
       color: var(--muted);
       font-size: clamp(16px, 1.5vw, 18.5px);
-      max-width: 30em;
+      max-width: 32em;
       margin: 22px auto 30px;
       line-height: 1.55
     }
@@ -223,101 +242,64 @@
       }
     }
 
-    form {
+    /* buttons */
+    .btn-row {
       display: flex;
-      gap: 9px;
-      max-width: 440px;
-      margin: 0 auto;
-      flex-wrap: wrap;
-      justify-content: center
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap
     }
 
-    .field {
-      flex: 1;
-      min-width: 210px;
-      display: flex;
-      align-items: center;
-      background: var(--bg2);
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      padding: 0 14px;
-      transition: .2s
-    }
-
-    .field:focus-within {
-      border-color: var(--profit);
-      box-shadow: 0 0 0 4px rgba(16, 185, 129, .1)
-    }
-
-    input[type=email] {
-      flex: 1;
-      background: transparent;
-      border: 0;
-      outline: 0;
-      color: var(--ink);
-      font-family: var(--sans);
-      font-size: 15px;
-      padding: 15px 0
-    }
-
-    input::placeholder {
-      color: var(--faint)
-    }
-
-    button.cta {
+    .btn {
       font-family: var(--sans);
       font-weight: 600;
-      font-size: 15px;
-      color: #fff;
-      background: var(--profit);
-      border: 0;
+      font-size: 15.5px;
+      text-decoration: none;
       border-radius: 12px;
-      padding: 15px 22px;
-      cursor: pointer;
+      padding: 15px 26px;
       transition: .2s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      cursor: pointer;
+      border: 1px solid transparent;
       white-space: nowrap
     }
 
-    button.cta:hover {
+    .btn-primary {
+      color: #fff;
+      background: var(--profit)
+    }
+
+    .btn-primary:hover {
       background: #047857;
       transform: translateY(-1px);
-      box-shadow: 0 12px 26px -12px rgba(5, 150, 105, .5)
+      box-shadow: 0 14px 28px -12px rgba(5, 150, 105, .5)
     }
 
-    button.cta:disabled {
-      opacity: .6;
-      cursor: default;
-      transform: none;
-      box-shadow: none
+    .btn-ghost {
+      color: var(--ink);
+      background: var(--bg2);
+      border-color: var(--line)
     }
 
-    .formnote {
-      font-size: 13px;
-      color: var(--faint);
-      margin-top: 13px
-    }
-
-    .formnote b {
-      color: var(--muted);
-      font-weight: 500
-    }
-
-    .msg {
-      font-size: 14.5px;
-      margin-top: 14px;
-      display: none
-    }
-
-    .msg.show {
-      display: block
-    }
-
-    .msg.ok {
+    .btn-ghost:hover {
+      border-color: var(--profit);
       color: var(--profit)
     }
 
-    .msg.err {
-      color: var(--cost)
+    .trustline {
+      font-size: 13px;
+      color: var(--faint);
+      margin-top: 18px;
+      font-family: var(--mono);
+      letter-spacing: .02em
+    }
+
+    .trustline b {
+      color: var(--muted);
+      font-weight: 500
     }
 
     /* dashboard preview */
@@ -536,6 +518,32 @@
       color: var(--faint)
     }
 
+    /* trust strip */
+    .trust {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px 30px;
+      max-width: 1060px;
+      margin: 34px auto 0;
+      padding: 26px 28px 0
+    }
+
+    .trust span {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13.5px;
+      color: var(--muted);
+      font-family: var(--mono);
+      letter-spacing: .01em
+    }
+
+    .trust svg {
+      color: var(--profit);
+      flex-shrink: 0
+    }
+
     .section {
       padding: 80px 0 0;
       margin-top: 48px;
@@ -562,6 +570,50 @@
 
     h2 .muted {
       color: var(--faint)
+    }
+
+    /* how it works */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-top: 44px
+    }
+
+    .step {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 26px 24px;
+      box-shadow: 0 1px 2px rgba(20, 30, 20, .03)
+    }
+
+    .step .n {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background: var(--profit);
+      color: #fff;
+      font-family: var(--mono);
+      font-weight: 700;
+      font-size: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px
+    }
+
+    .step h3 {
+      font-size: 16.5px;
+      font-weight: 600;
+      letter-spacing: -.01em;
+      margin-bottom: 7px
+    }
+
+    .step p {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.55
     }
 
     .grid3 {
@@ -635,6 +687,91 @@
       color: var(--profit)
     }
 
+    /* pricing */
+    .pricing {
+      text-align: center
+    }
+
+    .pricing h2 {
+      margin: 0 auto
+    }
+
+    .price-card {
+      max-width: 430px;
+      margin: 44px auto 0;
+      background: var(--surface);
+      border: 1px solid rgba(16, 185, 129, .35);
+      border-radius: 20px;
+      padding: 34px 32px;
+      box-shadow: 0 30px 70px -45px rgba(16, 40, 30, .4);
+      text-align: left
+    }
+
+    .price-card .plan {
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--profit)
+    }
+
+    .price-card .amt {
+      font-family: var(--display);
+      font-size: 56px;
+      font-weight: 500;
+      letter-spacing: -.02em;
+      margin: 4px 0 0;
+      line-height: 1
+    }
+
+    .price-card .amt span {
+      font-family: var(--sans);
+      font-size: 16px;
+      color: var(--muted);
+      font-weight: 400;
+      letter-spacing: 0
+    }
+
+    .price-card .tag {
+      font-size: 14px;
+      color: var(--muted);
+      margin: 8px 0 22px
+    }
+
+    .price-card ul {
+      list-style: none;
+      margin: 0 0 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px
+    }
+
+    .price-card li {
+      display: flex;
+      gap: 10px;
+      font-size: 14.5px;
+      color: var(--ink);
+      line-height: 1.4
+    }
+
+    .price-card li svg {
+      color: var(--profit);
+      flex-shrink: 0;
+      margin-top: 2px
+    }
+
+    .price-card .btn {
+      width: 100%
+    }
+
+    .price-foot {
+      font-size: 12.5px;
+      color: var(--faint);
+      margin-top: 14px;
+      text-align: center;
+      line-height: 1.5
+    }
+
     .final {
       text-align: center;
       padding: 30px 0 96px
@@ -645,7 +782,7 @@
     }
 
     .final .sub {
-      margin: 0 auto 30px
+      margin: 0 auto 28px
     }
 
     .faq {
@@ -783,13 +920,20 @@
         grid-template-columns: repeat(2, 1fr)
       }
 
-      .grid3 {
+      .grid3,
+      .steps {
         grid-template-columns: 1fr
       }
 
+      .navlinks a.txt {
+        display: none
+      }
+
       .dashwrap,
-      .wrap {
-        padding: 0 18px
+      .wrap,
+      .trust {
+        padding-left: 18px;
+        padding-right: 18px
       }
     }
   </style>
@@ -799,30 +943,41 @@
   <div class="grain"></div>
   <div class="wrap">
     <nav>
-      <div class="brand"><img src="M.png" width="32px" height="auto"> Margin OS</div>
-      <a class="navbtn" href="#join">Join waitlist</a>
+      <div class="brand"><img src="M.png" width="32px" height="auto" alt="Margin OS"> Margin OS</div>
+      <div class="navlinks">
+        <a class="txt" href="#how">How it works</a>
+        <a class="txt" href="#pricing">Pricing</a>
+        <a class="txt" href="#faq">FAQ</a>
+        <a class="navbtn" data-install href="https://apps.shopify.com/margin-os" target="_blank" rel="noopener">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M7 7V6a5 5 0 0110 0v1h2.2a1 1 0 011 .9l1.1 12.5A2 2 0 0120.3 22H3.7a2 2 0 01-2-1.6L2.8 7.9a1 1 0 011-.9H7zm2 0h6V6a3 3 0 00-6 0v1z" />
+          </svg>
+          Add to Shopify
+        </a>
+      </div>
     </nav>
 
     <header class="hero">
-      <div class="badge reveal d1"><span class="dot"></span> Coming soon to the Shopify App Store</div>
+      <div class="badge reveal d1"><span class="dot"></span> Live on the Shopify App Store</div>
       <h1 class="reveal d2">Know your <em>true profit</em>.<br>Not just <span class="strike">revenue</span>.</h1>
-      <p class="sub reveal d3">Real net profit for your Shopify store — per order, product, and channel, after COGS,
-        fees, shipping, refunds, and expenses. See it live below. 👇</p>
-      <div class="reveal d4" id="join">
-        <form id="waitlist" action="https://formspree.io/f/xqeonrvd" method="POST">
-          <label class="field"><input type="email" name="email" required placeholder="you@yourstore.com"
-              autocomplete="email" /></label>
-          <button class="cta" type="submit">Join the waitlist</button>
-        </form>
-        <p class="formnote"><b>Be first in line</b> — early access + founding-merchant pricing.</p>
-        <p class="msg ok" id="ok">You're on the list. We'll email you the moment Margin OS goes live. 🎉</p>
-        <p class="msg err" id="err">Something went wrong — please try again.</p>
+      <p class="sub reveal d3">Margin OS shows your real net profit — per order, product, and channel — after COGS,
+        fees, shipping, refunds, and expenses. Right inside your Shopify admin.</p>
+      <div class="btn-row reveal d4">
+        <a class="btn btn-primary" data-install href="https://apps.shopify.com/margin-os" target="_blank"
+          rel="noopener">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M7 7V6a5 5 0 0110 0v1h2.2a1 1 0 011 .9l1.1 12.5A2 2 0 0120.3 22H3.7a2 2 0 01-2-1.6L2.8 7.9a1 1 0 011-.9H7zm2 0h6V6a3 3 0 00-6 0v1z" />
+          </svg>
+          Add to Shopify
+        </a>
+        <a class="btn btn-ghost" href="#demo">See the live demo</a>
       </div>
+      <p class="trustline reveal d4"><b>7-day free trial</b> · then $5/mo · cancel anytime</p>
     </header>
   </div>
 
   <!-- INTERACTIVE DASHBOARD PREVIEW -->
-  <div class="dashwrap reveal d4">
+  <div class="dashwrap reveal d4" id="demo">
     <div class="dash" aria-label="Margin OS dashboard preview">
       <div class="dash-top">
         <div class="dash-title">
@@ -891,9 +1046,48 @@
     </div>
   </div>
 
+  <!-- TRUST STRIP -->
+  <div class="trust reveal">
+    <span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+        <path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round" /></svg> Built for Shopify</span>
+    <span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+        <path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round" /></svg> One-click install</span>
+    <span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+        <path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round" /></svg> Encrypted &amp; never
+      sold</span>
+    <span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+        <path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round" /></svg> Cancel anytime</span>
+  </div>
+
   <div class="wrap">
+    <!-- HOW IT WORKS -->
+    <section class="section" id="how">
+      <div class="eyebrow reveal">How it works</div>
+      <h2 class="reveal">Real profit in three steps. <span class="muted">No spreadsheets.</span></h2>
+      <div class="steps">
+        <div class="step reveal">
+          <div class="n">1</div>
+          <h3>Install in one click</h3>
+          <p>Add Margin OS from the Shopify App Store. It syncs your orders and products automatically — nothing else to
+            connect.</p>
+        </div>
+        <div class="step reveal">
+          <div class="n">2</div>
+          <h3>Add your costs</h3>
+          <p>Enter product costs inline or import them by CSV, then add your monthly expenses. Takes a few minutes.</p>
+        </div>
+        <div class="step reveal">
+          <div class="n">3</div>
+          <h3>See your true profit</h3>
+          <p>Real margins light up across every order, product, and channel — plus a forecast of where you're headed.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
     <section class="section">
-      <div class="eyebrow reveal">What you'll get</div>
+      <div class="eyebrow reveal">What you get</div>
       <h2 class="reveal">Every cost accounted for. <span class="muted">Every margin, finally visible.</span></h2>
       <div class="grid3">
         <div class="feat">
@@ -949,7 +1143,41 @@
       <p>Revenue is what you ring up.<br><b>Profit is what you keep.</b></p>
     </section>
 
-    <section class="section faq-section">
+    <!-- PRICING -->
+    <section class="section pricing" id="pricing">
+      <div class="eyebrow reveal">Pricing</div>
+      <h2 class="reveal">One simple plan. Everything included.</h2>
+      <div class="price-card reveal">
+        <div class="plan">Pro</div>
+        <div class="amt">$5<span> / month</span></div>
+        <div class="tag">7-day free trial — no card needed to start</div>
+        <ul>
+          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+              <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" /></svg> True net profit per order,
+            product &amp; channel</li>
+          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+              <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" /></svg> COGS — inline or bulk CSV
+            import</li>
+          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+              <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" /></svg> Operating expenses &amp;
+            true net profit</li>
+          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+              <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" /></svg> Profit dashboard, trends
+            &amp; breakdowns</li>
+          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+              <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" /></svg> Channel &amp; returns
+            analytics</li>
+          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+              <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" /></svg> Profit forecasting</li>
+        </ul>
+        <a class="btn btn-primary" data-install href="https://apps.shopify.com/margin-os" target="_blank"
+          rel="noopener">Start 7-day free trial</a>
+        <p class="price-foot">Billed through Shopify on your regular invoice. Cancel anytime from your Shopify admin.</p>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section faq-section" id="faq">
       <div class="eyebrow reveal">Questions</div>
       <h2 class="reveal">Everything you're wondering.</h2>
       <div class="faq reveal">
@@ -970,8 +1198,19 @@
               <path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round" />
             </svg>
           </summary>
-          <div class="a">$9.99/month with a 7-day free trial, billed through Shopify on your regular invoice — no
-            separate card needed. Waitlist members get founding-merchant pricing.</div>
+          <div class="a">$5/month with a 7-day free trial, billed through Shopify on your regular invoice — no separate
+            card needed. Cancel anytime from your Shopify admin.</div>
+        </details>
+        <details>
+          <summary>How do I install it?
+            <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2">
+              <path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </summary>
+          <div class="a">Margin OS is live on the Shopify App Store. <a data-install
+              href="https://apps.shopify.com/margin-os" target="_blank" rel="noopener">Add it in one click</a> and your
+            store starts syncing orders and products right away — it runs embedded inside your Shopify admin.</div>
         </details>
         <details>
           <summary>Is my data safe?
@@ -1004,41 +1243,39 @@
           <div class="a">Any Shopify store. It installs in one click from the Shopify App Store and runs embedded right
             inside your admin — nothing else to connect.</div>
         </details>
-        <details>
-          <summary>When does it launch?
-            <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-              stroke-width="2">
-              <path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
-          </summary>
-          <div class="a">It's in final review with Shopify right now. Join the waitlist and you'll be first to get
-            access the moment it goes live.</div>
-        </details>
       </div>
     </section>
 
+    <!-- FINAL CTA -->
     <section class="final">
-      <h2 class="reveal">Get on the waitlist.</h2>
-      <p class="sub reveal">We're in final review with Shopify. Join now for early access and founding-merchant pricing.
-      </p>
-      <form id="waitlist2" action="https://formspree.io/f/xqeonrvd" method="POST" class="reveal">
-        <label class="field"><input type="email" name="email" required placeholder="you@yourstore.com"
-            autocomplete="email" /></label>
-        <button class="cta" type="submit">Join the waitlist</button>
-      </form>
-      <p class="msg ok" id="ok2">You're on the list. We'll be in touch soon. 🎉</p>
-      <p class="msg err" id="err2">Something went wrong — please try again.</p>
+      <h2 class="reveal">See your true profit today.</h2>
+      <p class="sub reveal">Install Margin OS in one click. Free for 7 days, then $5/mo — billed through Shopify.</p>
+      <div class="btn-row reveal">
+        <a class="btn btn-primary" data-install href="https://apps.shopify.com/margin-os" target="_blank"
+          rel="noopener">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M7 7V6a5 5 0 0110 0v1h2.2a1 1 0 011 .9l1.1 12.5A2 2 0 0120.3 22H3.7a2 2 0 01-2-1.6L2.8 7.9a1 1 0 011-.9H7zm2 0h6V6a3 3 0 00-6 0v1z" />
+          </svg>
+          Add to Shopify
+        </a>
+      </div>
+      <p class="trustline reveal">No card needed to start · cancel anytime from your Shopify admin</p>
     </section>
 
     <footer>
-      <div class="brand"><img src="M.png" width="32px" height="auto"> Margin OS</div>
-      <div class="links"><a href="mailto:support@marginos.in">Contact</a><a href="/privacy">Privacy</a><a
+      <div class="brand"><img src="M.png" width="32px" height="auto" alt="Margin OS"> Margin OS</div>
+      <div class="links"><a data-install href="https://apps.shopify.com/margin-os" target="_blank" rel="noopener">App
+          Store</a><a href="mailto:support@marginos.in">Contact</a><a href="/privacy">Privacy</a><a
           href="/terms">Terms</a></div>
       <div class="copy">© 2026 Margin OS · True profit intelligence for Shopify merchants</div>
     </footer>
   </div>
 
   <script>
+    // Single place to set your Shopify App Store URL — every "Add to Shopify" / install link uses it.
+    var STORE_URL = 'https://apps.shopify.com/margin-os';
+    [].forEach.call(document.querySelectorAll('[data-install]'), function (a) { a.href = STORE_URL; });
+
     var TODAY = { rev: 1840, profit: 512 };
     var RL = { '7D': '7-Day', '30D': '30-Day', '90D': '90-Day' };
     var DATA = {
@@ -1132,21 +1369,6 @@
       render(b.dataset.r, false);
     });
     render('30D', true);
-
-    function wire(formId, okId, errId) {
-      var f = document.getElementById(formId); if (!f) return;
-      f.addEventListener('submit', async function (e) {
-        e.preventDefault();
-        var ok = document.getElementById(okId), err = document.getElementById(errId);
-        ok.classList.remove('show'); err.classList.remove('show');
-        var btn = f.querySelector('button'), label = btn.textContent; btn.disabled = true; btn.textContent = 'Joining…';
-        try {
-          var res = await fetch(f.action, { method: 'POST', body: new FormData(f), headers: { 'Accept': 'application/json' } });
-          if (res.ok) { f.reset(); ok.classList.add('show'); btn.textContent = 'Joined ✓'; } else { throw 0; }
-        } catch (_) { err.classList.add('show'); btn.disabled = false; btn.textContent = label; }
-      });
-    }
-    wire('waitlist', 'ok', 'err'); wire('waitlist2', 'ok2', 'err2');
   </script>
 </body>
 
