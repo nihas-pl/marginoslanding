@@ -616,6 +616,39 @@
       line-height: 1.55
     }
 
+    .sec-intro {
+      font-size: clamp(15px, 1.4vw, 17px);
+      color: var(--muted);
+      max-width: 46em;
+      margin: 16px 0 0;
+      line-height: 1.55
+    }
+
+    .feat--leak .ic {
+      background: rgba(194, 65, 12, .09);
+      border-color: rgba(194, 65, 12, .22)
+    }
+
+    .feat--leak:hover {
+      border-color: rgba(194, 65, 12, .35);
+      background: rgba(194, 65, 12, .035);
+      box-shadow: 0 18px 36px -22px rgba(120, 40, 16, .22)
+    }
+
+    .leak-note {
+      text-align: center;
+      max-width: 42em;
+      margin: 32px auto 0;
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.6
+    }
+
+    .leak-note b {
+      color: var(--ink);
+      font-weight: 600
+    }
+
     .grid3 {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -1060,6 +1093,68 @@
   </div>
 
   <div class="wrap">
+    <!-- HIDDEN COSTS / RTO + COD (India-resonant) -->
+    <section class="section">
+      <div class="eyebrow reveal" style="color:var(--cost)">Where the money goes</div>
+      <h2 class="reveal">Revenue looks great — until <span style="color:var(--cost)">RTO, COD and returns</span> hit.</h2>
+      <p class="sec-intro reveal">These are the costs that quietly turn your best-sellers into break-even — and they hit
+        Indian D2C stores hardest. Margin OS bakes every one into your true profit, automatically.</p>
+      <div class="grid3">
+        <div class="feat feat--leak">
+          <div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C2410C" stroke-width="2">
+              <path d="M9 14l-4-4 4-4" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M5 10h10a4 4 0 014 4v2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg></div>
+          <h3>RTO (return-to-origin)</h3>
+          <p>Failed COD deliveries cost you shipping both ways plus handling — with zero revenue to show for it.</p>
+        </div>
+        <div class="feat feat--leak">
+          <div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C2410C" stroke-width="2">
+              <rect x="2" y="7" width="20" height="10" rx="2" />
+              <circle cx="12" cy="12" r="2.4" />
+            </svg></div>
+          <h3>COD fees &amp; failures</h3>
+          <p>Cash-on-delivery is most of your orders and the least of your margin once charges and non-delivery pile up.
+          </p>
+        </div>
+        <div class="feat feat--leak">
+          <div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C2410C" stroke-width="2">
+              <path d="M3 12a9 9 0 109-9 9 9 0 00-7 3.3" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M3 3v4.5h4.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg></div>
+          <h3>Returns &amp; refunds</h3>
+          <p>Every return is the refund plus lost shipping and restocking — and it's almost never counted per product.</p>
+        </div>
+        <div class="feat feat--leak">
+          <div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C2410C" stroke-width="2">
+              <rect x="2" y="5" width="20" height="14" rx="2" />
+              <path d="M2 10h20" />
+            </svg></div>
+          <h3>Payment &amp; gateway fees</h3>
+          <p>2–3%+ shaved off every prepaid order before you ever see a rupee of it.</p>
+        </div>
+        <div class="feat feat--leak">
+          <div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C2410C" stroke-width="2">
+              <path d="M1 6h13v9H1zM14 9h4l3 3v3h-7z" stroke-linejoin="round" />
+              <circle cx="6" cy="17.5" r="1.5" />
+              <circle cx="18" cy="17.5" r="1.5" />
+            </svg></div>
+          <h3>Shipping you absorb</h3>
+          <p>"Free shipping" is a very real per-order cost. Margin OS counts it on every order.</p>
+        </div>
+        <div class="feat feat--leak">
+          <div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C2410C" stroke-width="2">
+              <path d="M20.5 12L12 20.5l-9-9V3h8.5z" stroke-linejoin="round" />
+              <circle cx="7.5" cy="7.5" r="1.4" />
+            </svg></div>
+          <h3>Product cost (COGS)</h3>
+          <p>The big one — what each SKU actually costs you to source or make, subtracted per order.</p>
+        </div>
+      </div>
+      <p class="leak-note reveal">Margin OS subtracts your <b>product cost, returns, shipping and fees</b> on every single
+        order — so the profit lost to RTO and failed COD finally shows up in your real numbers.</p>
+    </section>
+
     <!-- HOW IT WORKS -->
     <section class="section" id="how">
       <div class="eyebrow reveal">How it works</div>
@@ -1232,6 +1327,17 @@
           </summary>
           <div class="a">Margin OS syncs your orders and products automatically on install. You just add your product
             costs — inline or by bulk CSV — plus any monthly expenses, and your real margins appear instantly.</div>
+        </details>
+        <details>
+          <summary>Does it handle COD and RTO?
+            <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2">
+              <path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </summary>
+          <div class="a">Margin OS subtracts returns, return-shipping and fees on every order, so the profit you lose to
+            RTO and failed COD deliveries is reflected in your true net profit. Add your COGS and expenses and you'll see
+            exactly what each order — prepaid or COD — actually made you.</div>
         </details>
         <details>
           <summary>Which stores does it work with?
