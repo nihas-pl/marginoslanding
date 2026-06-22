@@ -970,6 +970,39 @@
       }
     }
   </style>
+
+  <!-- ===== Analytics & ad tracking (safe to deploy with empty IDs) ===== -->
+  <script>
+    // Paste your IDs below. Leave any value as '' to keep that tag OFF.
+    window.TRACK = {
+      ga4: '',        // GA4 Measurement ID, e.g. 'G-XXXXXXXXXX'
+      googleAds: '',  // Google Ads tag ID, e.g. 'AW-XXXXXXXXXX'
+      adsLabel: '',   // Google Ads conversion LABEL for the "Add to Shopify" click, e.g. 'abcdEFGHij'
+      metaPixel: ''   // Meta Pixel ID, e.g. '123456789012345'
+    };
+    (function () {
+      var T = window.TRACK;
+      if (T.ga4 || T.googleAds) {
+        var s = document.createElement('script');
+        s.async = true;
+        s.src = 'https://www.googletagmanager.com/gtag/js?id=' + (T.ga4 || T.googleAds);
+        document.head.appendChild(s);
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = function () { dataLayer.push(arguments); };
+        gtag('js', new Date());
+        if (T.ga4) gtag('config', T.ga4);
+        if (T.googleAds) gtag('config', T.googleAds);
+      }
+      if (T.metaPixel) {
+        !function (f, b, e, v, n, t, s) {
+          if (f.fbq) return; n = f.fbq = function () { n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments) };
+          if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0'; n.queue = [];
+          t = b.createElement(e); t.async = !0; t.src = v; s = b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s)
+        }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', T.metaPixel); fbq('track', 'PageView');
+      }
+    })();
+  </script>
 </head>
 
 <body>
@@ -1380,7 +1413,22 @@
   <script>
     // Single place to set your Shopify App Store URL — every "Add to Shopify" / install link uses it.
     var STORE_URL = 'https://apps.shopify.com/margin-os';
-    [].forEach.call(document.querySelectorAll('[data-install]'), function (a) { a.href = STORE_URL; });
+    [].forEach.call(document.querySelectorAll('[data-install]'), function (a) {
+      a.href = STORE_URL;
+      a.addEventListener('click', function () {
+        try {
+          var T = window.TRACK || {};
+          // Google Ads conversion — only fires when both the tag ID and label are set
+          if (window.gtag && T.googleAds && T.adsLabel) {
+            gtag('event', 'conversion', { send_to: T.googleAds + '/' + T.adsLabel });
+          }
+          // GA4 event — mark "add_to_shopify_click" as a key event in GA4 to count it
+          if (window.gtag) gtag('event', 'add_to_shopify_click');
+          // Meta Pixel — used for retargeting + optimization
+          if (window.fbq) fbq('track', 'Lead', { content_name: 'Add to Shopify' });
+        } catch (e) {}
+      });
+    });
 
     var TODAY = { rev: 1840, profit: 512 };
     var RL = { '7D': '7-Day', '30D': '30-Day', '90D': '90-Day' };
